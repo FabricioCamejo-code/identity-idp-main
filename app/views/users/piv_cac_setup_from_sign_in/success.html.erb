@@ -1,0 +1,10 @@
+<% title t('headings.piv_cac_login.success') %>
+
+<%= image_tag asset_url('alert/success.svg'), size: 90, class: 'margin-bottom-2' %>
+
+<%= render PageHeadingComponent.new.with_content(t('headings.piv_cac_login.success')) %>
+
+<%= button_to t('forms.buttons.continue'), login_add_piv_cac_success_path,
+              class: 'usa-button usa-button--big usa-button--wide', method: :post %>
+
+<%= render 'shared/cancel', link: destroy_user_session_path %>

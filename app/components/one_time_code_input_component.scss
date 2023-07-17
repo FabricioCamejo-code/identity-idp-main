@@ -1,0 +1,13 @@
+@use 'uswds-core' as *;
+
+lg-one-time-code-input {
+  display: block;
+
+  @include at-media('tablet') {
+    width: 50%;
+  }
+}
+
+.one-time-code-input__input {
+  @include u-font-family('mono');
+}

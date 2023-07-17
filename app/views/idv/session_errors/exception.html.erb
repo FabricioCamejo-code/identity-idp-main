@@ -1,0 +1,31 @@
+<%= render(
+      'idv/shared/error',
+      type: :warning,
+      heading: t('idv.failure.sessions.exception'),
+      action: {
+        text: t('idv.failure.button.warning'),
+        url: @try_again_path,
+      },
+      options: [
+        {
+          url: MarketingSite.contact_url,
+          text: t('idv.troubleshooting.options.contact_support', app_name: APP_NAME),
+          new_tab: true,
+        },
+        decorated_session.sp_name && {
+          url: return_to_sp_failure_to_proof_path(
+            step: 'verify_info',
+            location: request.params[:action],
+          ),
+          text: t('idv.troubleshooting.options.get_help_at_sp', sp_name: decorated_session.sp_name),
+          new_tab: true,
+        },
+      ].compact,
+    ) do %>
+      <p>
+        <%= t(
+              'idv.failure.exceptions.text_html',
+              link_html: link_to(t('idv.failure.exceptions.link'), MarketingSite.contact_url),
+            ) %>
+      </p>
+    <% end %>

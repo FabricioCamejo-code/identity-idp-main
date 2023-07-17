@@ -1,0 +1,126 @@
+<% title t('in_person_proofing.headings.barcode') %>
+
+<% content_for(:pre_flash_content) do %>
+  <%= render StepIndicatorComponent.new(
+        steps: step_indicator_steps,
+        current_step: :go_to_the_post_office,
+        locale_scope: 'idv',
+        class: 'margin-x-neg-2 margin-top-neg-4 tablet:margin-x-neg-6 tablet:margin-top-neg-4',
+      ) %>
+<% end %>
+
+<% if @presenter.outage_message_enabled? %>
+  <%= render AlertComponent.new(type: :warning, class: 'margin-bottom-4', text_tag: 'div') do %>
+    <%= render 'shared/outage_alert', date: @presenter.formatted_outage_expected_update_date, email_date: @presenter.formatted_outage_emailed_by_date %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(class: 'text-center') do %>
+  <%= t('in_person_proofing.headings.barcode') %>
+<% end %>
+
+      <div class="text-center">
+        <%= render 'idv/shared/mini_logo' %>
+        <%= render BarcodeComponent.new(
+              barcode_data: @presenter.enrollment_code,
+              label: t('in_person_proofing.process.barcode.caption_label'),
+              label_formatter: Idv::InPerson::EnrollmentCodeFormatter.method(:format),
+            ) %>
+      </div>
+
+<%= render AlertComponent.new(class: 'margin-y-4', text_tag: :div) do %>
+  <p class="margin-bottom-1 margin-top-0 h3"><strong><%= t('in_person_proofing.body.barcode.deadline', deadline: @presenter.formatted_due_date) %></strong></p>
+  <p class="margin-bottom-0"><%= t('in_person_proofing.body.barcode.deadline_restart') %></p>
+<% end %>
+
+<section class="border-1px border-primary-light radius-lg padding-4">
+  <h2 class="margin-top-0 margin-bottom-2"><%= t('in_person_proofing.body.barcode.what_to_expect') %></h2>
+  <%= render ProcessListComponent.new(heading_level: :h3, class: 'margin-y-3') do |c| %>
+    <% c.with_item(heading: t('in_person_proofing.process.what_to_do.heading')) do %>
+      <p><%= t('in_person_proofing.process.what_to_do.info', app_name: APP_NAME) %></p>
+    <% end %>
+    <% c.with_item(heading: t('in_person_proofing.process.barcode.heading', app_name: APP_NAME)) do %>
+      <p class="margin-bottom-105"><%= t('in_person_proofing.process.barcode.info') %></p>
+    <% end %>
+    <% c.with_item(heading: t('in_person_proofing.process.state_id.heading')) do %>
+      <p><%= t('in_person_proofing.process.state_id.info') %></p>
+    <% end %>
+    <% if @presenter.needs_proof_of_address? %>
+      <% c.with_item(heading: t('in_person_proofing.process.proof_of_address.heading')) do %>
+        <p class="margin-bottom-105"><%= t('in_person_proofing.process.proof_of_address.info') %></p>
+        <ul class="usa-list margin-y-105">
+          <% t('in_person_proofing.process.proof_of_address.acceptable_proof').each do |proof| %>
+            <li><%= proof %></li>
+          <% end %>
+        </ul>
+        <p><%= t('in_person_proofing.process.proof_of_address.physical_or_digital_copy') %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+  <p class="margin-bottom-0">
+    <%= t('in_person_proofing.body.barcode.questions') %>
+    <%= render ClickObserverComponent.new(event_name: 'IdV: user clicked what to bring link on ready to verify page') do %>
+      <%= new_tab_link_to(
+            t('in_person_proofing.body.barcode.learn_more'),
+            MarketingSite.help_center_article_url(
+              category: 'verify-your-identity',
+              article: 'verify-your-identity-in-person',
+            ),
+          ) %>
+      <% end %>
+  </p>
+</section>
+
+<h2 class="margin-bottom-2"><%= t('in_person_proofing.body.location.heading') %></h2>
+<p>
+  <%= t('in_person_proofing.body.location.info') %>
+  <% if @presenter.selected_location_details.present? %>
+    <%= t('in_person_proofing.body.location.selection') %>
+  <% end %>
+</p>
+
+<% if @presenter.selected_location_details.present? %>
+  <section aria-label="<%= t('in_person_proofing.body.barcode.location_details') %>" class="margin-bottom-4">
+    <address>
+      <h2 class="font-sans-md margin-bottom-1"><%= @presenter.selected_location_details['name'] %></h2>
+      <div class="margin-bottom-1">
+        <%= @presenter.selected_location_details['street_address'] %><br>
+        <%= @presenter.selected_location_details['formatted_city_state_zip'] %>
+      </div>
+      <h3 class="margin-y-0 h4"><%= t('in_person_proofing.body.barcode.retail_hours') %></h3>
+      <div class="margin-bottom-2">
+        <%= t('date.range', from: t('date.day_names')[1], to: t('date.day_names')[5]) %>: <%= @presenter.selected_location_hours(:weekday) %><br>
+        <%= t('date.day_names')[6] %>: <%= @presenter.selected_location_hours(:saturday) %><br>
+        <%= t('date.day_names')[7] %>: <%= @presenter.selected_location_hours(:sunday) %>
+      </div>
+    </address>
+  </section>
+<% end %>
+
+<h2 class="margin-bottom-2"><%= t('in_person_proofing.body.expect.heading') %></h2>
+<p><%= t('in_person_proofing.body.expect.info') %></p>
+
+<p class="margin-top-4"><strong><%= t('in_person_proofing.body.barcode.email_sent') %></strong></p>
+
+<p class="margin-top-3 margin-bottom-4">
+  <% if @presenter.service_provider_homepage_url.present? %>
+    <%= render ClickObserverComponent.new(event_name: 'IdV: user clicked sp link on ready to verify page') do %>
+      <%= t(
+            'in_person_proofing.body.barcode.return_to_partner_html',
+            link_html: link_to(
+              t(
+                'in_person_proofing.body.barcode.return_to_partner_link',
+                sp_name: @presenter.sp_name,
+              ),
+              @presenter.service_provider_homepage_url,
+            ),
+          ) %>
+    <% end %>
+  <% else %>
+    <%= t('in_person_proofing.body.barcode.close_window') %>
+  <% end %>
+</p>
+
+<%= render PageFooterComponent.new do %>
+  <%= link_to t('in_person_proofing.body.barcode.cancel_link_text'), idv_cancel_path(step: 'barcode') %>
+<% end %>

@@ -1,0 +1,8 @@
+{
+  "name": "@18f/identity-test-helpers",
+  "private": true,
+  "version": "1.0.0",
+  "peerDependencies": {
+    "sinon": "*"
+  }
+}

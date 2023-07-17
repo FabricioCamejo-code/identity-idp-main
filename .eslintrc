@@ -1,0 +1,45 @@
+{
+  "extends": "plugin:@18f/eslint-plugin-identity/recommended",
+  "plugins": ["@18f/eslint-plugin-identity"],
+  "env": {
+    "browser": true,
+    "commonjs": true
+  },
+  "globals": {
+    "globalThis": true
+  },
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "AssignmentExpression[left.property.name='href'][right.type=/(Template)?Literal/]",
+        "message": "Do not assign window.location.href to a string or string template to avoid losing i18n parameters"
+      },
+      {
+        "selector": "ExpressionStatement[expression.callee.object.name='userEvent']",
+        "message": "Await the promised result of a userEvent interaction"
+      }
+    ]
+  },
+  "settings": {
+    "import/internal-regex": "^@18f/identity-"
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.*", "*-spec.*", "*_spec.*", "spec/**"],
+      "globals": {
+        "expect": true
+      },
+      "rules": {
+        "react/jsx-props-no-spreading": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true,
+            "packageDir": "."
+          }
+        ]
+      }
+    }
+  ]
+}

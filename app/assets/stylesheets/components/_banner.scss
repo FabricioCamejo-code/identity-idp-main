@@ -1,0 +1,7 @@
+@use 'uswds-core' as *;
+
+.usa-banner__inner {
+  @include at-media('tablet') {
+    justify-content: center;
+  }
+}

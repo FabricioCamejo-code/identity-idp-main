@@ -1,0 +1,50 @@
+<% title t('titles.doc_auth.doc_capture') %>
+<% content_for :head do %>
+  <%= tag.meta name: 'acuant-sdk-initialization-endpoint', content: IdentityConfig.store.acuant_sdk_initialization_endpoint %>
+  <%= tag.meta name: 'acuant-sdk-initialization-creds', content: IdentityConfig.store.acuant_sdk_initialization_creds %>
+  <%= stylesheet_link_tag 'document-capture' %>
+<% end %>
+<%= tag.div id: 'document-capture-form', data: {
+      app_name: APP_NAME,
+      liveness_required: nil,
+      mock_client: (DocAuthRouter.doc_auth_vendor(discriminator: document_capture_session_uuid) == 'mock').presence,
+      help_center_redirect_url: help_center_redirect_url(
+        flow: :idv,
+        step: :document_capture,
+      ),
+      document_capture_session_uuid: document_capture_session_uuid,
+      endpoint: api_verify_images_url,
+      status_endpoint: nil,
+      glare_threshold: IdentityConfig.store.doc_auth_client_glare_threshold,
+      sharpness_threshold: IdentityConfig.store.doc_auth_client_sharpness_threshold,
+      status_poll_interval_ms: IdentityConfig.store.poll_rate_for_verify_in_seconds * 1000,
+      max_capture_attempts_before_tips: IdentityConfig.store.doc_auth_max_capture_attempts_before_tips,
+      max_capture_attempts_before_native_camera: IdentityConfig.store.doc_auth_max_capture_attempts_before_native_camera,
+      max_submission_attempts_before_native_camera: IdentityConfig.store.doc_auth_max_submission_attempts_before_native_camera,
+      acuant_sdk_upgrade_a_b_testing_enabled: acuant_sdk_upgrade_a_b_testing_enabled,
+      use_alternate_sdk: use_alternate_sdk,
+      acuant_version: acuant_version,
+      sp_name: sp_name,
+      flow_path: flow_path,
+      cancel_url: idv_cancel_path,
+      failure_to_proof_url: failure_to_proof_url,
+      idv_in_person_url: (IdentityConfig.store.in_person_doc_auth_button_enabled && Idv::InPersonConfig.enabled_for_issuer?(decorated_session.sp_issuer)) ? idv_in_person_url : nil,
+      security_and_privacy_how_it_works_url: MarketingSite.security_and_privacy_how_it_works_url,
+      in_person_outage_message_enabled: IdentityConfig.store.in_person_outage_message_enabled,
+      in_person_outage_expected_update_date: IdentityConfig.store.in_person_outage_expected_update_date,
+    } %>
+  <%= simple_form_for(
+        :doc_auth,
+        url: url_for,
+        method: 'PUT',
+        html: { class: 'js-document-capture-form' },
+      ) do |f| %>
+    <%= f.input(
+          :document_capture_session_uuid,
+          as: :hidden,
+          input_html: { value: document_capture_session_uuid },
+        ) %>
+  <% end %>
+</div>
+
+<%= javascript_packs_tag_once 'document-capture' %>

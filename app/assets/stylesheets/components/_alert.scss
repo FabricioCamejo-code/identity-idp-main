@@ -1,0 +1,36 @@
+@use 'uswds-core' as *;
+
+.usa-alert--info-important {
+  @include u-bg('accent-cool-darker');
+  color: color('white');
+  font-weight: bold;
+
+  &::before {
+    background-image: url('/alert/info-white.svg');
+  }
+}
+
+.usa-alert--info-time {
+  &::before {
+    @include add-color-icon(
+      (
+        name: 'timer',
+        color: 'info',
+        'svg-width': 24,
+        'svg-height': 24,
+        height: units(2),
+      )
+    );
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.usa-alert__text > p:last-child {
+  margin-bottom: 0;
+}
+
+// Upstream fix: https://github.com/uswds/uswds/pull/5187
+.usa-alert .usa-alert__body::before {
+  height: units(2);
+}

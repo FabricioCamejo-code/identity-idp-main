@@ -1,0 +1,13 @@
+Dockerfile
+.gem
+tmp
+log
+node_modules
+db/*.sqlite3
+*.md
+.git*
+vendor/bundle
+postgres-data
+/public/assets
+/public/packs
+coverage/

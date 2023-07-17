@@ -1,0 +1,2 @@
+class MonthlyAuthCount < ApplicationRecord
+end

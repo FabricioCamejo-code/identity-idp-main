@@ -1,0 +1,14 @@
+@use 'uswds-core' as *;
+
+// ===============================================
+// Pending upstream Login Design System revisions:
+// ===============================================
+
+.usa-form-group--error {
+  border-left-style: none;
+  padding-left: 0;
+
+  @include at-media('desktop') {
+    margin-left: 0;
+  }
+}

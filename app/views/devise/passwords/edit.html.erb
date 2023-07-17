@@ -1,0 +1,31 @@
+<% title t('titles.passwords.change') %>
+
+<%= render PageHeadingComponent.new.with_content(t('headings.passwords.change')) %>
+
+<p><%= t('instructions.password.password_key') %></p>
+
+<%= simple_form_for(
+      @reset_password_form,
+      url: user_password_path,
+      html: { autocomplete: 'off',
+              method: :put },
+    ) do |f| %>
+  <%= f.input :reset_password_token, as: :hidden %>
+  <%= f.full_error :reset_password_token %>
+  <%= render PasswordToggleComponent.new(
+        form: f,
+        field_options: {
+          label: t('forms.passwords.edit.labels.password'),
+          required: true,
+          input_html: {
+            autocomplete: 'new-password',
+          },
+        },
+      ) %>
+  <%= render 'devise/shared/password_strength', forbidden_passwords: @forbidden_passwords %>
+  <%= f.submit t('forms.passwords.edit.buttons.submit'), class: 'display-block margin-y-5' %>
+<% end %>
+
+<%= render 'shared/password_accordion' %>
+
+<%= javascript_packs_tag_once 'pw-strength' %>

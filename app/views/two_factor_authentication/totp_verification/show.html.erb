@@ -1,0 +1,30 @@
+<% title t('titles.enter_2fa_code.security_code') %>
+
+<%= render PageHeadingComponent.new.with_content(@presenter.header) %>
+
+<%= simple_form_for('', method: :post, html: { class: 'margin-bottom-5' }) do |f| %>
+  <% if @presenter.reauthn %>
+    <%= render 'two_factor_authentication/totp_verification/reauthn' %>
+  <% end %>
+  <%= render OneTimeCodeInputComponent.new(
+        form: f,
+        value: @code,
+        autofocus: true,
+        transport: nil,
+        code_length: TwoFactorAuthenticatable::OTP_LENGTH,
+      ) %>
+  <%= f.input(
+        :remember_device,
+        as: :boolean,
+        label: t('forms.messages.remember_device'),
+        wrapper_html: { class: 'margin-top-2' },
+        input_html: {
+          class: 'usa-checkbox__input--bordered',
+          checked: @presenter.remember_device_box_checked?,
+        },
+      ) %>
+  <%= f.submit t('forms.buttons.submit.default'), class: 'display-block margin-top-5' %>
+<% end %>
+
+<%= render 'shared/fallback_links', presenter: @presenter %>
+<%= render 'shared/cancel', link: @presenter.cancel_link %>

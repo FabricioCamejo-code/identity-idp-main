@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["typings/*"]
+    }
+  },
+  "include": [
+    "app/components",
+    "app/javascript/packages",
+    "app/javascript/packs",
+    "spec/javascript/spec_helper.d.ts",
+    "spec/javascript/**/*.ts",
+    "scripts"
+  ],
+  "exclude": [
+    "**/fixtures",
+    "**/*.spec.js",
+    "app/javascript/packs/pw-strength.js",
+    "app/javascript/packs/saml-post.js",
+    "app/javascript/packs/ssn-field.js"
+  ]
+}

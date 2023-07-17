@@ -1,0 +1,27 @@
+<% title t('account_reset.request.title') %>
+
+<%= render PageHeadingComponent.new.with_content(t('account_reset.request.title')) %>
+
+<% t('account_reset.request.info').each do |info_p| %>
+  <p><%= info_p %></p>
+<% end %>
+
+<h2><%= t('account_reset.request.delete_account') %></h2>
+
+<% t('account_reset.request.delete_account_info').each do |info_p| %>
+  <p><%= info_p %></p>
+<% end %>
+
+<p><strong><%= t('account_reset.request.are_you_sure') %></strong></p>
+
+<%= button_to(
+      root_url,
+      method: :get,
+      form_class: 'margin-top-4 margin-bottom-2',
+      class: 'usa-button usa-button--big usa-button--wide',
+    ) { t('account_reset.request.no_cancel') } %>
+<%= button_to(
+      account_reset_request_path,
+      class: 'usa-button usa-button--unstyled',
+      method: :post,
+    ) { t('account_reset.request.yes_continue') } %>

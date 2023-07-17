@@ -1,0 +1,17 @@
+<% title @presenter.title %>
+
+<%= render PageHeadingComponent.new do %>
+  <%= @presenter.heading %>
+<% end %>
+
+<p class="margin-top-2 margin-bottom-2">
+  <%= @presenter.description %>
+</p>
+
+<%= render PageFooterComponent.new do %>
+  <% if MfaPolicy.new(current_user).two_factor_enabled? %>
+    <%= link_to t('links.cancel'), account_path %>
+  <% else %>
+    <%= link_to t('two_factor_authentication.choose_another_option'), authentication_methods_setup_path %>
+  <% end %>
+<% end %>

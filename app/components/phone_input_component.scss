@@ -1,0 +1,39 @@
+@use 'uswds-core' as *;
+
+lg-phone-input {
+  display: block;
+
+  .validated-field__input-wrapper {
+    margin-top: units(0.5);
+  }
+
+  .iti__flag {
+    background-image: url('/flags.png');
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      background-image: url('/flags@2x.png');
+    }
+  }
+
+  .iti__dial-code {
+    color: color('ink');
+  }
+
+  .iti:not(.iti--allow-dropdown) input {
+    padding-left: 36px;
+    padding-right: 6px;
+  }
+
+  .iti:not(.iti--allow-dropdown) .iti__flag-container {
+    left: 0;
+    right: auto;
+  }
+}
+
+.phone-input__international-code-wrapper {
+  display: none;
+
+  .no-js & {
+    display: block;
+  }
+}
