@@ -8,10 +8,20 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+- task: SonarQubeAnalyze@5
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
+
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'sonarqube'
+    scannerMode: 'CLI'
+    configMode: 'file'
+
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
