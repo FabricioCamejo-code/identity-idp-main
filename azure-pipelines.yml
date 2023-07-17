@@ -11,7 +11,13 @@ pool:
 - task: SonarQubeAnalyze@5
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
-
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'sonarqube'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'GSA_GSA_AYll5jfyHz-U-wGoG8gP'
+    cliSources: '.'
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
